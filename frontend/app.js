@@ -21,9 +21,9 @@ async function api(url, opt) {
    TOAST
    ========================================================= */
 
-function toast(t) {
+function toast(message) {
 
-    $("toast").textContent = t;
+    $("toast").textContent = message;
 
     $("toast").style.display = "block";
 
@@ -46,7 +46,11 @@ function showTab(id, btn) {
         });
 
 
-    $(id).classList.remove("hidden");
+    const target = $(id);
+
+    if (target) {
+        target.classList.remove("hidden");
+    }
 
 
     document
@@ -61,7 +65,7 @@ function showTab(id, btn) {
     }
 
 
-    $("title").textContent = {
+    const titles = {
 
         overview: "SOC Overview",
 
@@ -71,7 +75,13 @@ function showTab(id, btn) {
 
         ledger: "Secure Event Ledger"
 
-    }[id];
+    };
+
+
+    if ($("title")) {
+        $("title").textContent =
+            titles[id] || "CipherGrid SOC";
+    }
 
 
     if (id === "alerts") {
@@ -97,8 +107,7 @@ function showTab(id, btn) {
 
 function table(rows) {
 
-
-    if (!rows.length) {
+    if (!rows || !rows.length) {
 
         return `
             <div class="empty">
@@ -152,30 +161,30 @@ function table(rows) {
 
                 <span>
                     <b>
-                        ${x.threat}
+                        ${x.threat || "Unknown"}
                     </b>
                 </span>
 
 
                 <span>
 
-                    <i class="sev ${x.severity}">
-                        ${x.severity}
+                    <i class="sev ${x.severity || "Low"}">
+                        ${x.severity || "Low"}
                     </i>
 
                 </span>
 
 
                 <span>
-                    ${x.confidence}%
+                    ${x.confidence ?? 0}%
                 </span>
 
 
                 <span
                     class="link"
-                    onclick='detail(${JSON.stringify(x)})'>
+                    onclick='detail(${JSON.stringify(x).replace(/'/g, "&#39;")})'>
 
-                    ${x.flow_id}
+                    ${x.flow_id || "N/A"}
 
                 </span>
 
@@ -204,23 +213,78 @@ function table(rows) {
 
 
 /* =========================================================
-   ALERT DETAILS
+   FLOW / ALERT DETAIL
    ========================================================= */
 
 function detail(x) {
 
+    /*
+       STEP 1
+       Automatically switch to Alerts tab.
+    */
 
-    $("detail").classList.remove("hidden");
+    const navButtons =
+        document.querySelectorAll(".nav");
+
+    /*
+       The navigation order is:
+
+       1. Overview
+       2. Alerts
+       3. Traffic
+       4. Secure Ledger
+    */
+
+    const alertsButton =
+        navButtons.length > 1
+            ? navButtons[1]
+            : null;
 
 
-    $("detail").innerHTML = `
+    showTab(
+        "alerts",
+        alertsButton
+    );
+
+
+    /*
+       STEP 2
+       Show the detailed alert panel.
+    */
+
+    const detailPanel =
+        $("detail");
+
+
+    if (!detailPanel) {
+        return;
+    }
+
+
+    detailPanel.classList.remove("hidden");
+
+
+    /*
+       STEP 3
+       Display complete alert information.
+    */
+
+    detailPanel.innerHTML = `
 
         <div class="tools">
 
 
-            <h2>
-                ${x.threat}
-            </h2>
+            <div>
+
+                <h2>
+                    ${x.threat || "Security Alert"}
+                </h2>
+
+                <p class="muted">
+                    Detailed security-event analysis
+                </p>
+
+            </div>
 
 
             <button
@@ -238,7 +302,40 @@ function detail(x) {
         <div class="detailgrid">
 
 
+            <!-- =========================================
+                 ALERT INFORMATION
+                 ========================================= -->
+
             <div>
+
+
+                <h3>
+                    Alert Information
+                </h3>
+
+
+                <p>
+
+                    <b>
+                        Time:
+                    </b>
+
+                    ${x.timestamp
+                        ? new Date(x.timestamp).toLocaleString()
+                        : "N/A"}
+
+                </p>
+
+
+                <p>
+
+                    <b>
+                        Threat:
+                    </b>
+
+                    ${x.threat || "N/A"}
+
+                </p>
 
 
                 <p>
@@ -247,8 +344,10 @@ function detail(x) {
                         Severity:
                     </b>
 
-                    <i class="sev ${x.severity}">
-                        ${x.severity}
+                    <i class="sev ${x.severity || "Low"}">
+
+                        ${x.severity || "Low"}
+
                     </i>
 
                 </p>
@@ -260,7 +359,7 @@ function detail(x) {
                         Confidence:
                     </b>
 
-                    ${x.confidence}%
+                    ${x.confidence ?? 0}%
 
                 </p>
 
@@ -268,10 +367,10 @@ function detail(x) {
                 <p>
 
                     <b>
-                        Model:
+                        Detection Model:
                     </b>
 
-                    ${x.model}
+                    ${x.model || "N/A"}
 
                 </p>
 
@@ -279,11 +378,15 @@ function detail(x) {
                 <p>
 
                     <b>
-                        Flow:
+                        Flow ID:
                     </b>
+
+                    <br>
 
                     <span class="hash">
-                        ${x.flow_id}
+
+                        ${x.flow_id || "N/A"}
+
                     </span>
 
                 </p>
@@ -292,13 +395,32 @@ function detail(x) {
                 <p>
 
                     <b>
-                        Event hash:
+                        Event Hash:
                     </b>
 
                     <br>
 
                     <span class="hash">
-                        ${x.event_hash}
+
+                        ${x.event_hash || "N/A"}
+
+                    </span>
+
+                </p>
+
+
+                <p>
+
+                    <b>
+                        Previous Hash:
+                    </b>
+
+                    <br>
+
+                    <span class="hash">
+
+                        ${x.prev_hash || "N/A"}
+
                     </span>
 
                 </p>
@@ -307,6 +429,10 @@ function detail(x) {
             </div>
 
 
+
+            <!-- =========================================
+                 EVIDENCE + RECOMMENDATION
+                 ========================================= -->
 
             <div>
 
@@ -320,7 +446,7 @@ function detail(x) {
 
                     ${
                         x.evidence ||
-                        "No evidence available."
+                        "No supporting evidence available."
                     }
 
                 </div>
@@ -336,7 +462,7 @@ function detail(x) {
 
                     ${
                         x.recommendation ||
-                        "No recommendation available."
+                        "No prevention recommendation available."
                     }
 
                 </div>
@@ -349,6 +475,21 @@ function detail(x) {
 
     `;
 
+
+    /*
+       STEP 4
+       Scroll to the top so the user immediately
+       sees the selected alert.
+    */
+
+    window.scrollTo({
+
+        top: 0,
+
+        behavior: "smooth"
+
+    });
+
 }
 
 
@@ -358,110 +499,129 @@ function detail(x) {
 
 async function load() {
 
-
     try {
-
 
         const s =
             await api("/api/stats");
 
 
         /*
-         IMPORTANT FIX
+           IMPORTANT:
 
-         Total Alerts counter uses totalAlerts.
+           totalAlerts = Overview counter
 
-         The Alerts TAB uses the separate
-         id="alerts".
+           alerts = Actual Alerts tab
+
+           These must remain different IDs.
         */
 
-
-        $("totalAlerts").textContent =
-            s.alerts;
-
-
-        $("critical").textContent =
-            s.critical;
+        if ($("totalAlerts")) {
+            $("totalAlerts").textContent =
+                s.alerts;
+        }
 
 
-        $("high").textContent =
-            s.high;
+        if ($("critical")) {
+            $("critical").textContent =
+                s.critical;
+        }
 
 
-        $("flows").textContent =
-            s.flows;
+        if ($("high")) {
+            $("high").textContent =
+                s.high;
+        }
 
 
+        if ($("flows")) {
+            $("flows").textContent =
+                s.flows;
+        }
 
-        /* Threat distribution */
+
+        /*
+           Threat distribution
+        */
+
+        const threats =
+            s.threats || [];
 
 
         const max =
             Math.max(
                 1,
-                ...s.threats.map(x => x.n)
+                ...threats.map(x => x.n)
             );
 
 
-        $("threats").innerHTML =
+        if ($("threats")) {
 
-            s.threats.map(x => `
+            $("threats").innerHTML =
 
-                <div class="bar">
+                threats.map(x => `
 
-
-                    <span>
-                        ${x.threat}
-                    </span>
+                    <div class="bar">
 
 
-                    <div class="track">
+                        <span>
+                            ${x.threat}
+                        </span>
 
 
-                        <div
-                            class="fill"
-                            style="width:${x.n / max * 100}%">
+                        <div class="track">
+
+
+                            <div
+                                class="fill"
+                                style="width:${x.n / max * 100}%">
+                            </div>
+
+
                         </div>
+
+
+                        <b>
+                            ${x.n}
+                        </b>
 
 
                     </div>
 
+                `).join("")
 
-                    <b>
-                        ${x.n}
-                    </b>
+                ||
 
+                `
+                    <div class="empty">
+                        No detections.
+                        Use Simulate Flows.
+                    </div>
+                `;
 
-                </div>
-
-            `).join("")
-
-            ||
-
-            `
-                <div class="empty">
-                    No detections.
-                    Use Simulate Flows.
-                </div>
-            `;
+        }
 
 
+        /*
+           Recent alerts
+        */
 
-        /* Recent alerts */
+        if ($("recent")) {
+
+            const events =
+                await api(
+                    "/api/events?limit=8"
+                );
 
 
-        $("recent").innerHTML =
+            $("recent").innerHTML =
+                table(events);
 
-            table(
-                await api("/api/events?limit=8")
-            );
+        }
 
 
     } catch (e) {
 
-
         console.error(e);
-
 
         toast(
             "Unable to load SOC statistics."
@@ -478,33 +638,40 @@ async function load() {
 
 async function loadAlerts() {
 
-
     try {
 
-
         const events =
-            await api("/api/events?limit=200");
+            await api(
+                "/api/events?limit=200"
+            );
 
 
-        $("alertTable").innerHTML =
-            table(events);
+        if ($("alertTable")) {
+
+            $("alertTable").innerHTML =
+                table(events);
+
+        }
 
 
     } catch (e) {
 
-
         console.error(e);
 
 
-        $("alertTable").innerHTML = `
+        if ($("alertTable")) {
 
-            <div class="empty">
+            $("alertTable").innerHTML = `
 
-                Unable to load security alerts.
+                <div class="empty">
 
-            </div>
+                    Unable to load security alerts.
 
-        `;
+                </div>
+
+            `;
+
+        }
 
     }
 
@@ -512,106 +679,130 @@ async function loadAlerts() {
 
 
 /* =========================================================
-   TRAFFIC
+   TRAFFIC TAB
    ========================================================= */
 
 async function loadFlows() {
 
-
     try {
 
-
-        const f =
-            await api("/api/flows?limit=200");
-
-
-        $("flowTable").innerHTML =
-
-            f.length
-
-            ?
-
-            `
-
-                <div class="row head">
-
-                    <span>
-                        Flow
-                    </span>
-
-                    <span>
-                        Source
-                    </span>
-
-                    <span>
-                        Destination
-                    </span>
-
-                    <span>
-                        Protocol
-                    </span>
-
-                    <span>
-                        Bytes
-                    </span>
-
-                </div>
+        const flows =
+            await api(
+                "/api/flows?limit=200"
+            );
 
 
-                ${f.map(x => `
+        if (!$("flowTable")) {
+            return;
+        }
 
-                    <div class="row">
 
-                        <span class="hash">
-                            ${x.flow_id}
-                        </span>
+        if (!flows.length) {
 
-                        <span>
-                            ${x.src_ip}
-                        </span>
+            $("flowTable").innerHTML = `
 
-                        <span>
-                            ${x.dst_ip}
-                        </span>
-
-                        <span>
-                            ${x.protocol}
-                        </span>
-
-                        <span>
-                            ${Number(
-                                x.bytes
-                            ).toLocaleString()}
-                        </span>
-
-                    </div>
-
-                `).join("")}
-
-            `
-
-            :
-
-            `
                 <div class="empty">
                     No flows.
                 </div>
+
             `;
 
-
-    } catch (e) {
-
-
-        console.error(e);
+            return;
+        }
 
 
         $("flowTable").innerHTML = `
 
-            <div class="empty">
-                Unable to load flows.
+            <div class="row head">
+
+                <span>
+                    Flow
+                </span>
+
+                <span>
+                    Source
+                </span>
+
+                <span>
+                    Destination
+                </span>
+
+                <span>
+                    Protocol
+                </span>
+
+                <span>
+                    Bytes
+                </span>
+
             </div>
 
+
+            ${flows.map(x => `
+
+                <div class="row">
+
+                    <span class="hash">
+
+                        ${x.flow_id}
+
+                    </span>
+
+
+                    <span>
+
+                        ${x.src_ip}
+
+                    </span>
+
+
+                    <span>
+
+                        ${x.dst_ip}
+
+                    </span>
+
+
+                    <span>
+
+                        ${x.protocol}
+
+                    </span>
+
+
+                    <span>
+
+                        ${Number(
+                            x.bytes || 0
+                        ).toLocaleString()}
+
+                    </span>
+
+                </div>
+
+            `).join("")}
+
         `;
+
+
+    } catch (e) {
+
+        console.error(e);
+
+
+        if ($("flowTable")) {
+
+            $("flowTable").innerHTML = `
+
+                <div class="empty">
+
+                    Unable to load flows.
+
+                </div>
+
+            `;
+
+        }
 
     }
 
@@ -624,30 +815,40 @@ async function loadFlows() {
 
 async function loadLedger() {
 
-
     try {
 
-
-        $("ledgerTable").innerHTML =
-
-            table(
-                await api("/api/events?limit=100")
+        const events =
+            await api(
+                "/api/events?limit=100"
             );
+
+
+        if ($("ledgerTable")) {
+
+            $("ledgerTable").innerHTML =
+                table(events);
+
+        }
 
 
     } catch (e) {
 
-
         console.error(e);
 
 
-        $("ledgerTable").innerHTML = `
+        if ($("ledgerTable")) {
 
-            <div class="empty">
-                Unable to load ledger.
-            </div>
+            $("ledgerTable").innerHTML = `
 
-        `;
+                <div class="empty">
+
+                    Unable to load ledger.
+
+                </div>
+
+            `;
+
+        }
 
     }
 
@@ -660,12 +861,17 @@ async function loadLedger() {
 
 async function verifyLedger() {
 
-
     try {
 
-
         const x =
-            await api("/api/verify-ledger");
+            await api(
+                "/api/verify-ledger"
+            );
+
+
+        if (!$("verify")) {
+            return;
+        }
 
 
         $("verify").className =
@@ -691,9 +897,7 @@ async function verifyLedger() {
 
     } catch (e) {
 
-
         console.error(e);
-
 
         toast(
             "Ledger verification failed."
@@ -705,7 +909,7 @@ async function verifyLedger() {
 
 
 /* =========================================================
-   SIMULATE
+   SIMULATE FLOWS
    ========================================================= */
 
 async function simulate(
@@ -713,9 +917,7 @@ async function simulate(
     count
 ) {
 
-
     try {
-
 
         const x =
 
@@ -732,8 +934,13 @@ async function simulate(
 
                     body:
                         JSON.stringify({
-                            threat,
-                            count
+
+                            threat:
+                                threat || "random",
+
+                            count:
+                                count || 1
+
                         })
 
                 }
@@ -752,9 +959,7 @@ async function simulate(
 
     } catch (e) {
 
-
         console.error(e);
-
 
         toast(
             "Simulation failed."
@@ -771,42 +976,52 @@ async function simulate(
 
 async function uploadCSV() {
 
+    const input =
+        $("csv");
 
-    const f =
-        $("csv").files[0];
 
-
-    if (!f) {
+    if (!input) {
         return;
     }
 
 
-    const d =
+    const file =
+        input.files[0];
+
+
+    if (!file) {
+        return;
+    }
+
+
+    const data =
         new FormData();
 
 
-    d.append(
+    data.append(
         "file",
-        f
+        file
     );
 
 
     try {
-
 
         const x =
 
             await api(
                 "/api/upload-csv",
                 {
+
                     method: "POST",
-                    body: d
+
+                    body: data
+
                 }
             );
 
 
         toast(
-            `${x.created} CSV flows processed`
+            `${x.created} CSV flow(s) processed`
         );
 
 
@@ -817,9 +1032,7 @@ async function uploadCSV() {
 
     } catch (e) {
 
-
         console.error(e);
-
 
         toast(
             "CSV upload failed."
@@ -836,42 +1049,52 @@ async function uploadCSV() {
 
 async function uploadPCAP() {
 
+    const input =
+        $("pcap");
 
-    const f =
-        $("pcap").files[0];
 
-
-    if (!f) {
+    if (!input) {
         return;
     }
 
 
-    const d =
+    const file =
+        input.files[0];
+
+
+    if (!file) {
+        return;
+    }
+
+
+    const data =
         new FormData();
 
 
-    d.append(
+    data.append(
         "file",
-        f
+        file
     );
 
 
     try {
-
 
         const x =
 
             await api(
                 "/api/upload-pcap",
                 {
+
                     method: "POST",
-                    body: d
+
+                    body: data
+
                 }
             );
 
 
         toast(
-            `${x.created} PCAP flows processed`
+            `${x.created} PCAP flow(s) processed`
         );
 
 
@@ -882,12 +1105,11 @@ async function uploadPCAP() {
 
     } catch (e) {
 
-
         console.error(e);
 
-
         toast(
-            e.message
+            e.message ||
+            "PCAP upload failed."
         );
 
     }
@@ -902,7 +1124,9 @@ async function uploadPCAP() {
 load();
 
 
-/* Refresh overview every 5 seconds */
+/* =========================================================
+   AUTO REFRESH
+   ========================================================= */
 
 setInterval(
     load,
