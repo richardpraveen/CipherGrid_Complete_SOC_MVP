@@ -1,71 +1,456 @@
 <!doctype html>
 <html>
+
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+
 <title>CipherGrid SOC</title>
+
 <link rel="stylesheet" href="/static/style.css">
 </head>
+
+
 <body>
+
 <div class="layout">
+
+
+<!-- =====================================================
+     SIDEBAR
+     ===================================================== -->
+
 <aside>
-  <div class="brand"><div class="logo">C</div><div><b>CIPHERGRID</b><small>AI SECURITY SOC</small></div></div>
-  <button class="nav active" onclick="showTab('overview',this)">◈ Overview</button>
-  <button class="nav" onclick="showTab('alerts',this)">⚠ Alerts</button>
-  <button class="nav" onclick="showTab('traffic',this)">↔ Traffic</button>
-  <button class="nav" onclick="showTab('ledger',this)">⛓ Secure Ledger</button>
-  <div class="sidecard">● Monitoring Active<br><small>Read-only analysis</small></div>
-  <div class="sidecard">Detection Engine<br><small>Random Forest<br>Isolation Forest</small></div>
+
+    <div class="brand">
+
+        <div class="logo">
+            C
+        </div>
+
+        <div>
+            <b>CIPHERGRID</b>
+            <small>AI SECURITY SOC</small>
+        </div>
+
+    </div>
+
+
+    <button
+        class="nav active"
+        onclick="showTab('overview',this)">
+        ◈ Overview
+    </button>
+
+
+    <button
+        class="nav"
+        onclick="showTab('alerts',this)">
+        ⚠ Alerts
+    </button>
+
+
+    <button
+        class="nav"
+        onclick="showTab('traffic',this)">
+        ↔ Traffic
+    </button>
+
+
+    <button
+        class="nav"
+        onclick="showTab('ledger',this)">
+        ⛓ Secure Ledger
+    </button>
+
+
+    <div class="sidecard">
+
+        ● Monitoring Active
+
+        <br>
+
+        <small>
+            Read-only analysis
+        </small>
+
+    </div>
+
+
+    <div class="sidecard">
+
+        Detection Engine
+
+        <br>
+
+        <small>
+            Random Forest
+            <br>
+            Isolation Forest
+        </small>
+
+    </div>
+
 </aside>
 
+
+
+<!-- =====================================================
+     MAIN
+     ===================================================== -->
+
 <main>
+
+
 <header>
-  <div><h1 id="title">SOC Overview</h1><p>Continuous analysis of read-only network-flow telemetry</p></div>
-  <div class="actions">
-    <button class="primary" onclick="simulate('random',5)">＋ Simulate Flows</button>
-    <label>Upload CSV<input id="csv" type="file" accept=".csv" onchange="uploadCSV()"></label>
-    <label>Upload PCAP<input id="pcap" type="file" accept=".pcap,.pcapng" onchange="uploadPCAP()"></label>
-  </div>
+
+    <div>
+
+        <h1 id="title">
+            SOC Overview
+        </h1>
+
+        <p>
+            Continuous analysis of read-only network-flow telemetry
+        </p>
+
+    </div>
+
+
+    <div class="actions">
+
+        <button
+            class="primary"
+            onclick="simulate('random',5)">
+            ＋ Simulate Flows
+        </button>
+
+
+        <label>
+            Upload CSV
+
+            <input
+                id="csv"
+                type="file"
+                accept=".csv"
+                onchange="uploadCSV()">
+        </label>
+
+
+        <label>
+            Upload PCAP
+
+            <input
+                id="pcap"
+                type="file"
+                accept=".pcap,.pcapng"
+                onchange="uploadPCAP()">
+        </label>
+
+    </div>
+
 </header>
 
-<section id="overview" class="tab">
-  <div class="cards">
-    <div><span>Total Alerts</span><strong id="alerts">0</strong></div>
-    <div><span>Critical</span><strong id="critical">0</strong></div>
-    <div><span>High</span><strong id="high">0</strong></div>
-    <div><span>Flows Analysed</span><strong id="flows">0</strong></div>
-  </div>
 
-  <div class="two">
-    <div class="panel"><h2>Threat Distribution</h2><div id="threats"></div></div>
-    <div class="panel"><h2>Detection Pipeline</h2><div class="pipeline">ONE-WAY INPUT → FLOW → FEATURES → AI → EVIDENCE → ALERT</div><p class="muted">Random Forest identifies learned patterns; Isolation Forest flags behavioural anomalies.</p></div>
-  </div>
 
-  <div class="panel"><h2>Recent Security Alerts</h2><div id="recent"></div></div>
-</section>
+<!-- =====================================================
+     OVERVIEW
+     ===================================================== -->
 
-<section id="alerts" class="tab hidden">
-  <div class="panel">
-    <div class="tools"><h2>Security Alerts</h2>
-      <div><button onclick="simulate('DDoS/Flooding',1)">Test DDoS</button><button onclick="simulate('C2 Beaconing',1)">Test C2</button><button onclick="simulate('DGA/DNS Tunnelling',1)">Test DGA</button><button onclick="simulate('Data Exfiltration',1)">Test Exfil</button></div>
+<section
+    id="overview"
+    class="tab">
+
+
+    <div class="cards">
+
+
+        <div>
+
+            <span>
+                Total Alerts
+            </span>
+
+            <!-- IMPORTANT:
+                 This is now totalAlerts,
+                 NOT alerts.
+            -->
+
+            <strong id="totalAlerts">
+                0
+            </strong>
+
+        </div>
+
+
+        <div>
+
+            <span>
+                Critical
+            </span>
+
+            <strong id="critical">
+                0
+            </strong>
+
+        </div>
+
+
+        <div>
+
+            <span>
+                High
+            </span>
+
+            <strong id="high">
+                0
+            </strong>
+
+        </div>
+
+
+        <div>
+
+            <span>
+                Flows Analysed
+            </span>
+
+            <strong id="flows">
+                0
+            </strong>
+
+        </div>
+
     </div>
-    <div id="alertTable"></div>
-  </div>
-  <div id="detail" class="panel hidden"></div>
+
+
+
+    <div class="two">
+
+
+        <div class="panel">
+
+            <h2>
+                Threat Distribution
+            </h2>
+
+            <div id="threats"></div>
+
+        </div>
+
+
+
+        <div class="panel">
+
+            <h2>
+                Detection Pipeline
+            </h2>
+
+            <div class="pipeline">
+
+                ONE-WAY INPUT
+                →
+                FLOW
+                →
+                FEATURES
+                →
+                AI
+                →
+                EVIDENCE
+                →
+                ALERT
+
+            </div>
+
+            <p class="muted">
+
+                Random Forest identifies learned patterns;
+                Isolation Forest flags behavioural anomalies.
+
+            </p>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="panel">
+
+        <h2>
+            Recent Security Alerts
+        </h2>
+
+        <div id="recent"></div>
+
+    </div>
+
+
 </section>
 
-<section id="traffic" class="tab hidden">
-  <div class="panel"><h2>Analysed Flows</h2><div id="flowTable"></div></div>
+
+
+<!-- =====================================================
+     ALERTS
+     ===================================================== -->
+
+<section
+    id="alerts"
+    class="tab hidden">
+
+
+    <div class="panel">
+
+
+        <div class="tools">
+
+
+            <h2>
+                Security Alerts
+            </h2>
+
+
+            <div>
+
+                <button
+                    onclick="simulate('DDoS/Flooding',1)">
+                    Test DDoS
+                </button>
+
+
+                <button
+                    onclick="simulate('C2 Beaconing',1)">
+                    Test C2
+                </button>
+
+
+                <button
+                    onclick="simulate('DGA/DNS Tunnelling',1)">
+                    Test DGA
+                </button>
+
+
+                <button
+                    onclick="simulate('Data Exfiltration',1)">
+                    Test Exfil
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- Alerts are inserted here -->
+
+        <div id="alertTable"></div>
+
+    </div>
+
+
+
+    <!-- Detailed alert information -->
+
+    <div
+        id="detail"
+        class="panel hidden">
+    </div>
+
+
 </section>
 
-<section id="ledger" class="tab hidden">
-  <div class="panel tools"><div><h2>Tamper-Evident Security Ledger</h2><p class="muted">SHA-256 hash-linked security events</p></div><button onclick="verifyLedger()">Verify Chain</button></div>
-  <div id="verify"></div>
-  <div class="panel"><div id="ledgerTable"></div></div>
+
+
+<!-- =====================================================
+     TRAFFIC
+     ===================================================== -->
+
+<section
+    id="traffic"
+    class="tab hidden">
+
+
+    <div class="panel">
+
+        <h2>
+            Analysed Flows
+        </h2>
+
+        <div id="flowTable"></div>
+
+    </div>
+
+
 </section>
+
+
+
+<!-- =====================================================
+     SECURE LEDGER
+     ===================================================== -->
+
+<section
+    id="ledger"
+    class="tab hidden">
+
+
+    <div class="panel tools">
+
+
+        <div>
+
+            <h2>
+                Tamper-Evident Security Ledger
+            </h2>
+
+            <p class="muted">
+
+                SHA-256 hash-linked security events
+
+            </p>
+
+        </div>
+
+
+        <button
+            onclick="verifyLedger()">
+
+            Verify Chain
+
+        </button>
+
+
+    </div>
+
+
+    <div id="verify"></div>
+
+
+    <div class="panel">
+
+        <div id="ledgerTable"></div>
+
+    </div>
+
+
+</section>
+
+
 </main>
+
 </div>
+
+
+
+<!-- Toast -->
+
 <div id="toast"></div>
+
+
+
+<!-- JavaScript -->
+
 <script src="/static/app.js"></script>
+
 </body>
+
 </html>
