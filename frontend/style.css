@@ -1,6 +1,11 @@
+/* =========================================================
+   GLOBAL
+   ========================================================= */
+
 * {
     box-sizing: border-box;
 }
+
 
 body {
     margin: 0;
@@ -9,10 +14,16 @@ body {
     font: 14px Segoe UI, Arial;
 }
 
+
+/* =========================================================
+   LAYOUT
+   ========================================================= */
+
 .layout {
     display: flex;
     min-height: 100vh;
 }
+
 
 aside {
     width: 235px;
@@ -23,12 +34,25 @@ aside {
     padding: 22px 14px;
 }
 
+
+main {
+    margin-left: 235px;
+    width: calc(100% - 235px);
+    padding: 25px 30px;
+}
+
+
+/* =========================================================
+   BRAND
+   ========================================================= */
+
 .brand {
     display: flex;
     align-items: center;
     gap: 10px;
     margin-bottom: 28px;
 }
+
 
 .logo {
     width: 38px;
@@ -42,16 +66,23 @@ aside {
     font-size: 20px;
 }
 
+
 .brand b {
     display: block;
     font-size: 13px;
     letter-spacing: 1px;
 }
 
+
 .brand small {
     color: #71869a;
     font-size: 9px;
 }
+
+
+/* =========================================================
+   NAVIGATION
+   ========================================================= */
 
 .nav {
     display: block;
@@ -66,11 +97,17 @@ aside {
     cursor: pointer;
 }
 
+
 .nav.active,
 .nav:hover {
     background: #10273a;
     color: #fff;
 }
+
+
+/* =========================================================
+   SIDEBAR CARDS
+   ========================================================= */
 
 .sidecard {
     margin: 20px 6px;
@@ -82,16 +119,16 @@ aside {
     font-size: 12px;
 }
 
+
 .sidecard small {
     color: #7890a3;
     line-height: 1.7;
 }
 
-main {
-    margin-left: 235px;
-    width: calc(100% - 235px);
-    padding: 25px 30px;
-}
+
+/* =========================================================
+   HEADER
+   ========================================================= */
 
 header {
     display: flex;
@@ -101,10 +138,12 @@ header {
     margin-bottom: 22px;
 }
 
+
 h1 {
     margin: 0;
     font-size: 27px;
 }
+
 
 header p,
 .muted {
@@ -112,11 +151,17 @@ header p,
     font-size: 12px;
 }
 
+
+/* =========================================================
+   BUTTONS
+   ========================================================= */
+
 .actions {
     display: flex;
     gap: 7px;
     flex-wrap: wrap;
 }
+
 
 .actions button,
 .actions label,
@@ -130,21 +175,29 @@ header p,
     font-size: 11px;
 }
 
+
 .actions .primary {
     background: #1289c0;
     border-color: #28aee8;
     color: white;
 }
 
+
 .actions input {
     display: none;
 }
+
+
+/* =========================================================
+   OVERVIEW CARDS
+   ========================================================= */
 
 .cards {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 12px;
 }
+
 
 .cards > div,
 .panel {
@@ -153,14 +206,17 @@ header p,
     border-radius: 11px;
 }
 
+
 .cards > div {
     padding: 17px;
 }
+
 
 .cards span {
     color: #7890a4;
     font-size: 11px;
 }
+
 
 .cards strong {
     display: block;
@@ -168,13 +224,20 @@ header p,
     margin-top: 7px;
 }
 
+
 .cards > div:nth-child(2) strong {
     color: #ff6677;
 }
 
+
 .cards > div:nth-child(3) strong {
     color: #ffbf55;
 }
+
+
+/* =========================================================
+   OVERVIEW TWO-COLUMN AREA
+   ========================================================= */
 
 .two {
     display: grid;
@@ -183,20 +246,32 @@ header p,
     margin-top: 12px;
 }
 
+
+.two .panel {
+    margin-top: 0;
+}
+
+
+/* =========================================================
+   PANELS
+   ========================================================= */
+
 .panel {
     padding: 16px;
     margin-top: 12px;
     overflow: auto;
 }
 
-.two .panel {
-    margin-top: 0;
-}
 
 .panel h2 {
     font-size: 15px;
     margin: 0 0 14px;
 }
+
+
+/* =========================================================
+   PIPELINE
+   ========================================================= */
 
 .pipeline {
     padding: 30px 8px;
@@ -207,6 +282,11 @@ header p,
     line-height: 3;
 }
 
+
+/* =========================================================
+   THREAT BARS
+   ========================================================= */
+
 .bar {
     display: grid;
     grid-template-columns: 190px 1fr 30px;
@@ -216,11 +296,13 @@ header p,
     font-size: 11px;
 }
 
+
 .track {
     height: 7px;
     background: #142b3e;
     border-radius: 20px;
 }
+
 
 .fill {
     height: 100%;
@@ -230,18 +312,74 @@ header p,
 
 
 /* =========================================================
-   TABLES
+   GENERAL TABLE ROW
+   Used by Traffic and other 5-column tables
    ========================================================= */
 
 .row {
     display: grid;
-    grid-template-columns: 150px 1.4fr 100px 80px 90px;
+
+    grid-template-columns:
+        150px
+        1.4fr
+        100px
+        80px
+        90px;
+
     gap: 10px;
+
     padding: 10px;
+
     border-bottom: 1px solid #173047;
+
     font-size: 11px;
+
     align-items: center;
 }
+
+
+.row > span {
+    min-width: 0;
+}
+
+
+/* =========================================================
+   ALERT / RECENT / LEDGER TABLE
+   6 COLUMNS
+   ========================================================= */
+
+#alertTable,
+#recent,
+#ledgerTable {
+    overflow-x: auto;
+}
+
+
+#alertTable .row,
+#recent .row,
+#ledgerTable .row {
+
+    grid-template-columns:
+
+        145px
+
+        minmax(140px, 1.25fr)
+
+        85px
+
+        80px
+
+        100px
+
+        minmax(280px, 2.2fr);
+
+    min-width: 900px;
+}
+
+
+/* =========================================================
+   TABLE HEADER
+   ========================================================= */
 
 .head {
     color: #71869a;
@@ -251,50 +389,36 @@ header p,
 
 
 /* =========================================================
-   ALERT TABLE - 6 COLUMNS
-   ========================================================= */
-
-#alertTable {
-    min-width: 1050px;
-}
-
-#alertTable .row,
-#recent .row {
-    grid-template-columns:
-        140px
-        minmax(140px, 1.2fr)
-        85px
-        80px
-        100px
-        minmax(280px, 2fr);
-}
-
-#alertTable .row > span,
-#recent .row > span {
-    min-width: 0;
-}
-
-
-/* =========================================================
    RECOMMENDATION
    ========================================================= */
 
 .recommend {
+
     padding: 9px 10px;
+
     border-radius: 7px;
+
     background: #08141f;
+
     border-left: 3px solid #27a9df;
+
     line-height: 1.5;
+
     font-size: 11px;
 
     white-space: normal;
+
     overflow-wrap: anywhere;
+
     word-break: normal;
+
 }
 
+
 #alertTable .recommend,
-#recent .recommend {
-    max-width: 100%;
+#recent .recommend,
+#ledgerTable .recommend {
+    width: 100%;
 }
 
 
@@ -309,25 +433,34 @@ header p,
     font-weight: bold;
 }
 
+
 .Critical {
     background: #541f2b;
     color: #ff8390;
 }
+
 
 .High {
     background: #513a1b;
     color: #ffca70;
 }
 
+
 .Medium {
     background: #183e53;
     color: #7bd8ff;
 }
 
+
 .Low {
     background: #17382e;
     color: #75ddb2;
 }
+
+
+/* =========================================================
+   LINKS
+   ========================================================= */
 
 .link {
     color: #42bdf3;
@@ -336,7 +469,7 @@ header p,
 
 
 /* =========================================================
-   DETAILS
+   TOOLS
    ========================================================= */
 
 .tools {
@@ -346,15 +479,26 @@ header p,
     gap: 10px;
 }
 
+
+/* =========================================================
+   HIDDEN
+   ========================================================= */
+
 .hidden {
     display: none;
 }
+
+
+/* =========================================================
+   DETAIL VIEW
+   ========================================================= */
 
 .detailgrid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 20px;
 }
+
 
 .evidence {
     padding: 12px;
@@ -365,19 +509,31 @@ header p,
     font-size: 12px;
 }
 
+
 .hash {
     font: 10px Consolas;
     color: #6994ab;
 }
+
+
+/* =========================================================
+   LEDGER
+   ========================================================= */
 
 .verify {
     padding: 10px;
     color: #78dfb1;
 }
 
+
 .bad {
     color: #ff7785;
 }
+
+
+/* =========================================================
+   EMPTY
+   ========================================================= */
 
 .empty {
     text-align: center;
@@ -391,36 +547,49 @@ header p,
    ========================================================= */
 
 #toast {
+
     display: none;
+
     position: fixed;
+
     right: 20px;
+
     bottom: 20px;
+
     padding: 12px 16px;
+
     background: #12344b;
+
     border: 1px solid #2a6686;
+
     border-radius: 8px;
+
     font-size: 12px;
 }
 
 
 /* =========================================================
-   MOBILE / SMALL SCREEN
+   MOBILE
    ========================================================= */
 
 @media (max-width: 850px) {
 
+
     aside {
         width: 65px;
     }
+
 
     .brand div,
     .nav {
         font-size: 0;
     }
 
+
     .sidecard {
         display: none;
     }
+
 
     main {
         margin-left: 65px;
@@ -428,24 +597,32 @@ header p,
         padding: 18px;
     }
 
+
     .cards {
         grid-template-columns: 1fr 1fr;
     }
 
+
     .two {
         grid-template-columns: 1fr;
     }
+
 
     header {
         flex-direction: column;
         align-items: flex-start;
     }
 
+
     .detailgrid {
         grid-template-columns: 1fr;
     }
 
-    #alertTable {
-        min-width: 1050px;
+
+    #alertTable,
+    #recent,
+    #ledgerTable {
+        overflow-x: auto;
     }
+
 }
