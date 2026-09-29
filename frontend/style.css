@@ -9,8 +9,11 @@
 
 body {
     margin: 0;
+
     background: #07111f;
+
     color: #eaf2f8;
+
     font: 14px Segoe UI, Arial;
 }
 
@@ -21,24 +24,36 @@ body {
 
 .layout {
     display: flex;
+
     min-height: 100vh;
 }
 
 
 aside {
+
     width: 235px;
+
     position: fixed;
+
     inset: 0 auto 0 0;
+
     background: #091827;
+
     border-right: 1px solid #19354d;
+
     padding: 22px 14px;
+
 }
 
 
 main {
+
     margin-left: 235px;
+
     width: calc(100% - 235px);
+
     padding: 25px 30px;
+
 }
 
 
@@ -47,36 +62,58 @@ main {
    ========================================================= */
 
 .brand {
+
     display: flex;
+
     align-items: center;
+
     gap: 10px;
+
     margin-bottom: 28px;
+
 }
 
 
 .logo {
+
     width: 38px;
+
     height: 38px;
+
     border: 2px solid #32b8f2;
+
     border-radius: 10px;
+
     display: grid;
+
     place-items: center;
+
     color: #32b8f2;
+
     font-weight: 900;
+
     font-size: 20px;
+
 }
 
 
 .brand b {
+
     display: block;
+
     font-size: 13px;
+
     letter-spacing: 1px;
+
 }
 
 
 .brand small {
+
     color: #71869a;
+
     font-size: 9px;
+
 }
 
 
@@ -85,23 +122,37 @@ main {
    ========================================================= */
 
 .nav {
+
     display: block;
+
     width: 100%;
+
     border: 0;
+
     background: none;
+
     color: #9bb0c2;
+
     text-align: left;
+
     padding: 12px;
+
     border-radius: 8px;
+
     margin: 3px 0;
+
     cursor: pointer;
+
 }
 
 
 .nav.active,
 .nav:hover {
+
     background: #10273a;
+
     color: #fff;
+
 }
 
 
@@ -110,19 +161,30 @@ main {
    ========================================================= */
 
 .sidecard {
+
     margin: 20px 6px;
+
     padding: 12px;
+
     background: #0d2132;
+
     border: 1px solid #1b3b53;
+
     border-radius: 9px;
+
     color: #70dfa9;
+
     font-size: 12px;
+
 }
 
 
 .sidecard small {
+
     color: #7890a3;
+
     line-height: 1.7;
+
 }
 
 
@@ -131,24 +193,36 @@ main {
    ========================================================= */
 
 header {
+
     display: flex;
+
     justify-content: space-between;
+
     gap: 20px;
+
     align-items: center;
+
     margin-bottom: 22px;
+
 }
 
 
 h1 {
+
     margin: 0;
+
     font-size: 27px;
+
 }
 
 
 header p,
 .muted {
+
     color: #71869a;
+
     font-size: 12px;
+
 }
 
 
@@ -157,34 +231,52 @@ header p,
    ========================================================= */
 
 .actions {
+
     display: flex;
+
     gap: 7px;
+
     flex-wrap: wrap;
+
 }
 
 
 .actions button,
 .actions label,
 .panel button {
+
     border: 1px solid #29475f;
+
     background: #0e2335;
+
     color: #dceaf4;
+
     padding: 9px 11px;
+
     border-radius: 7px;
+
     cursor: pointer;
+
     font-size: 11px;
+
 }
 
 
 .actions .primary {
+
     background: #1289c0;
+
     border-color: #28aee8;
+
     color: white;
+
 }
 
 
 .actions input {
+
     display: none;
+
 }
 
 
@@ -193,62 +285,90 @@ header p,
    ========================================================= */
 
 .cards {
+
     display: grid;
+
     grid-template-columns: repeat(4, 1fr);
+
     gap: 12px;
+
 }
 
 
 .cards > div,
 .panel {
+
     background: #0b1b2a;
+
     border: 1px solid #19354c;
+
     border-radius: 11px;
+
 }
 
 
 .cards > div {
+
     padding: 17px;
+
 }
 
 
 .cards span {
+
     color: #7890a4;
+
     font-size: 11px;
+
 }
 
 
 .cards strong {
+
     display: block;
+
     font-size: 30px;
+
     margin-top: 7px;
+
 }
 
 
 .cards > div:nth-child(2) strong {
+
     color: #ff6677;
+
 }
 
 
 .cards > div:nth-child(3) strong {
+
     color: #ffbf55;
+
 }
 
 
 /* =========================================================
-   OVERVIEW TWO-COLUMN AREA
+   TWO COLUMN
    ========================================================= */
 
 .two {
+
     display: grid;
+
     grid-template-columns: 1.15fr 1fr;
+
     gap: 12px;
+
     margin-top: 12px;
+
 }
 
 
 .two .panel {
+
     margin-top: 0;
+
 }
 
 
@@ -257,15 +377,22 @@ header p,
    ========================================================= */
 
 .panel {
+
     padding: 16px;
+
     margin-top: 12px;
+
     overflow: auto;
+
 }
 
 
 .panel h2 {
+
     font-size: 15px;
+
     margin: 0 0 14px;
+
 }
 
 
@@ -274,12 +401,19 @@ header p,
    ========================================================= */
 
 .pipeline {
+
     padding: 30px 8px;
+
     text-align: center;
+
     color: #65d3ff;
+
     font-size: 11px;
+
     font-weight: bold;
+
     line-height: 3;
+
 }
 
 
@@ -288,35 +422,50 @@ header p,
    ========================================================= */
 
 .bar {
+
     display: grid;
+
     grid-template-columns: 190px 1fr 30px;
+
     gap: 8px;
+
     align-items: center;
+
     margin: 10px 0;
+
     font-size: 11px;
+
 }
 
 
 .track {
+
     height: 7px;
+
     background: #142b3e;
+
     border-radius: 20px;
+
 }
 
 
 .fill {
+
     height: 100%;
+
     background: #28aee8;
+
     border-radius: 20px;
+
 }
 
 
 /* =========================================================
-   GENERAL TABLE ROW
-   Used by Traffic and other 5-column tables
+   NORMAL TABLE
    ========================================================= */
 
 .row {
+
     display: grid;
 
     grid-template-columns:
@@ -335,23 +484,28 @@ header p,
     font-size: 11px;
 
     align-items: center;
+
 }
 
 
 .row > span {
+
     min-width: 0;
+
 }
 
 
 /* =========================================================
    ALERT / RECENT / LEDGER TABLE
-   6 COLUMNS
+   SIX COLUMNS
    ========================================================= */
 
 #alertTable,
 #recent,
 #ledgerTable {
+
     overflow-x: auto;
+
 }
 
 
@@ -374,6 +528,7 @@ header p,
         minmax(280px, 2.2fr);
 
     min-width: 900px;
+
 }
 
 
@@ -382,9 +537,13 @@ header p,
    ========================================================= */
 
 .head {
+
     color: #71869a;
+
     text-transform: uppercase;
+
     font-size: 9px;
+
 }
 
 
@@ -410,15 +569,15 @@ header p,
 
     overflow-wrap: anywhere;
 
-    word-break: normal;
-
 }
 
 
 #alertTable .recommend,
 #recent .recommend,
 #ledgerTable .recommend {
+
     width: 100%;
+
 }
 
 
@@ -427,44 +586,71 @@ header p,
    ========================================================= */
 
 .sev {
+
     padding: 4px 7px;
+
     border-radius: 5px;
+
     font-size: 9px;
+
     font-weight: bold;
+
 }
 
 
 .Critical {
+
     background: #541f2b;
+
     color: #ff8390;
+
 }
 
 
 .High {
+
     background: #513a1b;
+
     color: #ffca70;
+
 }
 
 
 .Medium {
+
     background: #183e53;
+
     color: #7bd8ff;
+
 }
 
 
 .Low {
+
     background: #17382e;
+
     color: #75ddb2;
+
 }
 
 
 /* =========================================================
-   LINKS
+   FLOW LINK
    ========================================================= */
 
 .link {
+
     color: #42bdf3;
+
     cursor: pointer;
+
+}
+
+
+.link:hover {
+
+    text-decoration: underline;
+
 }
 
 
@@ -473,10 +659,15 @@ header p,
    ========================================================= */
 
 .tools {
+
     display: flex;
+
     justify-content: space-between;
+
     align-items: center;
+
     gap: 10px;
+
 }
 
 
@@ -485,34 +676,108 @@ header p,
    ========================================================= */
 
 .hidden {
+
     display: none;
+
 }
 
 
 /* =========================================================
-   DETAIL VIEW
+   DETAIL PANEL
+   ========================================================= */
+
+/*
+   Because #detail appears BEFORE #alertTable
+   in index.html, the selected alert will appear
+   at the TOP of the Alerts page.
+*/
+
+#detail {
+
+    margin-top: 0;
+
+    margin-bottom: 12px;
+
+}
+
+
+#detail h2 {
+
+    font-size: 20px;
+
+    margin-bottom: 5px;
+
+}
+
+
+#detail h3 {
+
+    font-size: 13px;
+
+    margin-top: 12px;
+
+    margin-bottom: 10px;
+
+}
+
+
+#detail p {
+
+    line-height: 1.7;
+
+    font-size: 12px;
+
+}
+
+
+/* =========================================================
+   DETAIL GRID
    ========================================================= */
 
 .detailgrid {
+
     display: grid;
+
     grid-template-columns: 1fr 1fr;
-    gap: 20px;
+
+    gap: 25px;
+
 }
 
+
+/* =========================================================
+   EVIDENCE
+   ========================================================= */
 
 .evidence {
+
     padding: 12px;
+
     border-radius: 7px;
+
     background: #08141f;
-    margin-bottom: 12px;
+
+    margin-bottom: 15px;
+
     line-height: 1.6;
+
     font-size: 12px;
+
 }
 
 
+/* =========================================================
+   HASH
+   ========================================================= */
+
 .hash {
+
     font: 10px Consolas;
+
     color: #6994ab;
+
+    word-break: break-all;
+
 }
 
 
@@ -521,13 +786,18 @@ header p,
    ========================================================= */
 
 .verify {
+
     padding: 10px;
+
     color: #78dfb1;
+
 }
 
 
 .bad {
+
     color: #ff7785;
+
 }
 
 
@@ -536,9 +806,13 @@ header p,
    ========================================================= */
 
 .empty {
+
     text-align: center;
+
     padding: 25px;
+
     color: #657d91;
+
 }
 
 
@@ -565,6 +839,9 @@ header p,
     border-radius: 8px;
 
     font-size: 12px;
+
+    z-index: 9999;
+
 }
 
 
@@ -576,53 +853,74 @@ header p,
 
 
     aside {
+
         width: 65px;
+
     }
 
 
     .brand div,
     .nav {
+
         font-size: 0;
+
     }
 
 
     .sidecard {
+
         display: none;
+
     }
 
 
     main {
+
         margin-left: 65px;
+
         width: calc(100% - 65px);
+
         padding: 18px;
+
     }
 
 
     .cards {
+
         grid-template-columns: 1fr 1fr;
+
     }
 
 
     .two {
+
         grid-template-columns: 1fr;
+
     }
 
 
     header {
+
         flex-direction: column;
+
         align-items: flex-start;
+
     }
 
 
     .detailgrid {
+
         grid-template-columns: 1fr;
+
     }
 
 
     #alertTable,
     #recent,
     #ledgerTable {
+
         overflow-x: auto;
+
     }
 
 }
