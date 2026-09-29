@@ -28,7 +28,9 @@ function toast(message) {
     $("toast").style.display = "block";
 
     setTimeout(() => {
+
         $("toast").style.display = "none";
+
     }, 2500);
 }
 
@@ -42,7 +44,9 @@ function showTab(id, btn) {
     document
         .querySelectorAll(".tab")
         .forEach(x => {
+
             x.classList.add("hidden");
+
         });
 
 
@@ -56,7 +60,9 @@ function showTab(id, btn) {
     document
         .querySelectorAll(".nav")
         .forEach(x => {
+
             x.classList.remove("active");
+
         });
 
 
@@ -79,8 +85,10 @@ function showTab(id, btn) {
 
 
     if ($("title")) {
+
         $("title").textContent =
             titles[id] || "CipherGrid SOC";
+
     }
 
 
@@ -102,7 +110,7 @@ function showTab(id, btn) {
 
 
 /* =========================================================
-   TABLE
+   ALERT / EVENT TABLE
    ========================================================= */
 
 function table(rows) {
@@ -155,28 +163,42 @@ function table(rows) {
 
 
                 <span>
-                    ${new Date(x.timestamp).toLocaleString()}
+
+                    ${
+                        x.timestamp
+                        ? new Date(
+                            x.timestamp
+                          ).toLocaleString()
+                        : "N/A"
+                    }
+
                 </span>
 
 
                 <span>
+
                     <b>
                         ${x.threat || "Unknown"}
                     </b>
+
                 </span>
 
 
                 <span>
 
                     <i class="sev ${x.severity || "Low"}">
+
                         ${x.severity || "Low"}
+
                     </i>
 
                 </span>
 
 
                 <span>
+
                     ${x.confidence ?? 0}%
+
                 </span>
 
 
@@ -213,33 +235,30 @@ function table(rows) {
 
 
 /* =========================================================
-   FLOW / ALERT DETAIL
+   ALERT DETAIL
+   FLOW ID → ALERT TAB → DETAIL AT TOP
    ========================================================= */
 
 function detail(x) {
 
+
     /*
-       STEP 1
-       Automatically switch to Alerts tab.
+       Find the Alerts navigation button.
     */
 
     const navButtons =
         document.querySelectorAll(".nav");
 
-    /*
-       The navigation order is:
-
-       1. Overview
-       2. Alerts
-       3. Traffic
-       4. Secure Ledger
-    */
 
     const alertsButton =
         navButtons.length > 1
             ? navButtons[1]
             : null;
 
+
+    /*
+       Open Alerts tab.
+    */
 
     showTab(
         "alerts",
@@ -248,8 +267,7 @@ function detail(x) {
 
 
     /*
-       STEP 2
-       Show the detailed alert panel.
+       Find detail panel.
     */
 
     const detailPanel =
@@ -261,15 +279,19 @@ function detail(x) {
     }
 
 
+    /*
+       Show detail panel.
+    */
+
     detailPanel.classList.remove("hidden");
 
 
     /*
-       STEP 3
-       Display complete alert information.
+       Fill detail panel.
     */
 
     detailPanel.innerHTML = `
+
 
         <div class="tools">
 
@@ -280,8 +302,11 @@ function detail(x) {
                     ${x.threat || "Security Alert"}
                 </h2>
 
+
                 <p class="muted">
+
                     Detailed security-event analysis
+
                 </p>
 
             </div>
@@ -320,9 +345,13 @@ function detail(x) {
                         Time:
                     </b>
 
-                    ${x.timestamp
-                        ? new Date(x.timestamp).toLocaleString()
-                        : "N/A"}
+                    ${
+                        x.timestamp
+                        ? new Date(
+                            x.timestamp
+                          ).toLocaleString()
+                        : "N/A"
+                    }
 
                 </p>
 
@@ -343,6 +372,7 @@ function detail(x) {
                     <b>
                         Severity:
                     </b>
+
 
                     <i class="sev ${x.severity || "Low"}">
 
@@ -431,7 +461,7 @@ function detail(x) {
 
 
             <!-- =========================================
-                 EVIDENCE + RECOMMENDATION
+                 EVIDENCE / RECOMMENDATION
                  ========================================= -->
 
             <div>
@@ -450,7 +480,6 @@ function detail(x) {
                     }
 
                 </div>
-
 
 
                 <h3>
@@ -477,9 +506,7 @@ function detail(x) {
 
 
     /*
-       STEP 4
-       Scroll to the top so the user immediately
-       sees the selected alert.
+       Scroll to top of page.
     */
 
     window.scrollTo({
@@ -501,46 +528,49 @@ async function load() {
 
     try {
 
+
         const s =
             await api("/api/stats");
 
 
         /*
-           IMPORTANT:
-
-           totalAlerts = Overview counter
-
-           alerts = Actual Alerts tab
-
-           These must remain different IDs.
+           Overview counters.
         */
 
         if ($("totalAlerts")) {
+
             $("totalAlerts").textContent =
                 s.alerts;
+
         }
 
 
         if ($("critical")) {
+
             $("critical").textContent =
                 s.critical;
+
         }
 
 
         if ($("high")) {
+
             $("high").textContent =
                 s.high;
+
         }
 
 
         if ($("flows")) {
+
             $("flows").textContent =
                 s.flows;
+
         }
 
 
         /*
-           Threat distribution
+           Threat distribution.
         */
 
         const threats =
@@ -550,7 +580,9 @@ async function load() {
         const max =
             Math.max(
                 1,
-                ...threats.map(x => x.n)
+                ...threats.map(
+                    x => x.n
+                )
             );
 
 
@@ -574,6 +606,7 @@ async function load() {
                             <div
                                 class="fill"
                                 style="width:${x.n / max * 100}%">
+
                             </div>
 
 
@@ -592,17 +625,21 @@ async function load() {
                 ||
 
                 `
+
                     <div class="empty">
+
                         No detections.
                         Use Simulate Flows.
+
                     </div>
+
                 `;
 
         }
 
 
         /*
-           Recent alerts
+           Recent alerts.
         */
 
         if ($("recent")) {
@@ -633,12 +670,13 @@ async function load() {
 
 
 /* =========================================================
-   ALERTS TAB
+   ALERTS
    ========================================================= */
 
 async function loadAlerts() {
 
     try {
+
 
         const events =
             await api(
@@ -679,12 +717,13 @@ async function loadAlerts() {
 
 
 /* =========================================================
-   TRAFFIC TAB
+   TRAFFIC
    ========================================================= */
 
 async function loadFlows() {
 
     try {
+
 
         const flows =
             await api(
@@ -708,6 +747,7 @@ async function loadFlows() {
             `;
 
             return;
+
         }
 
 
@@ -741,6 +781,7 @@ async function loadFlows() {
             ${flows.map(x => `
 
                 <div class="row">
+
 
                     <span class="hash">
 
@@ -777,6 +818,7 @@ async function loadFlows() {
                         ).toLocaleString()}
 
                     </span>
+
 
                 </div>
 
@@ -816,6 +858,7 @@ async function loadFlows() {
 async function loadLedger() {
 
     try {
+
 
         const events =
             await api(
@@ -863,6 +906,7 @@ async function verifyLedger() {
 
     try {
 
+
         const x =
             await api(
                 "/api/verify-ledger"
@@ -909,7 +953,7 @@ async function verifyLedger() {
 
 
 /* =========================================================
-   SIMULATE FLOWS
+   SIMULATE
    ========================================================= */
 
 async function simulate(
@@ -918,6 +962,7 @@ async function simulate(
 ) {
 
     try {
+
 
         const x =
 
@@ -928,8 +973,10 @@ async function simulate(
                     method: "POST",
 
                     headers: {
+
                         "Content-Type":
                             "application/json"
+
                     },
 
                     body:
@@ -1006,6 +1053,7 @@ async function uploadCSV() {
 
     try {
 
+
         const x =
 
             await api(
@@ -1078,6 +1126,7 @@ async function uploadPCAP() {
 
 
     try {
+
 
         const x =
 
